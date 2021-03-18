@@ -1,0 +1,21 @@
+{
+    "name": "iaam_apiauth_web",
+    "version": "1.0.0",
+    "description": "",
+    "main": "serve.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "body-parser": "^1.18.3",
+        "ejs": "^2.6.1",
+        "express": "^4.16.3",
+        "express-session": "^1.17.1",
+        "https-localhost": "^4.6.4",
+        "node-fetch": "^2.6.1",
+        "oxd-node": "^3.1.4",
+        "request": "^2.87.0"
+    }
+}

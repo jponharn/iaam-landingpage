@@ -1,0 +1,19 @@
+{
+    "op_host": "https://iaamdemo.lsr.nectec.or.th",
+    "client_port": "8000",
+    "client_name": "Landing Page",
+    "applications": [
+        {
+            "name": "",
+            "url": ""
+        }
+    ],
+    "oxd_setting": {
+        "https_extension": false,
+        "host": "localhost",
+        "port": 8099
+    },
+    "oxd_id": "",
+    "reg": {
+    }
+}

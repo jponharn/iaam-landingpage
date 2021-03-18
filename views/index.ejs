@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>IAAM API Auth</title>
+    <link href="css/styles.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="container container-lg container-md container-sm container-xl">
+        <h1><%= setting.client_name%></h1>
+        <% if(setting.oxd_id == "") {%>
+        <div class="row section">
+            <div class="card w-100">
+                <h5 class="card-header">Register</h5>
+                <div class="card-body">
+                    <h5 class="card-title">Register Application</h5>
+                    <div class="mb-3 row">
+                        <label for="op-host" class="col-sm-2 col-form-label">OP Host</label>
+                        <div class="col-sm-10">
+                            <input type="text" readonly class="form-control-plaintext" id="op-host" value="<%= setting.op_host%>">
+                        </div>
+                    </div>
+                    <form class="needs-validation" novalidate>
+                        <div class="row mb-3">
+                            <label for="client_name" class="col-sm-2 col-form-label">Client Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="client_name" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="authorization_redirect_uri" class="col-sm-2 col-form-label">redirect login uri (https only)</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="authorization_redirect_uri" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="post_logout_redirect_uri" class="col-sm-2 col-form-label">post logout redirect uir (https only)</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="post_logout_redirect_uri" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="scope" class="col-sm-2 col-form-label">scope</label>
+                            <div class="col-sm-10">
+                                <input type="text" readonly class="form-control-plaintext" id="scope" value="openid,email,profile,uma_protection">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label for="grant_types" class="col-sm-2 col-form-label">grant_types</label>
+                            <div class="col-sm-10">
+                                <input type="text" readonly class="form-control-plaintext" id="grant_types" value="authorization_code,client_credentials">
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="reg_submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <% } if(setting.oxd_id != "" && !uprofile.name) {%>
+        <div class="row section">
+            <div class="card w-100">
+                <h5 class="card-header">Login</h5>
+                <div class="card-body">
+                    <div class="mb-3 row">
+                        <label for="get-auth-op-host" class="col-sm-2 col-form-label">OP Host</label>
+                        <div class="col-sm-10">
+                            <input type="text" readonly class="form-control-plaintext" id="get-auth-op-host" value="<%= setting.op_host%>">
+                        </div>
+                    </div>
+                    <form>
+                        <div class="row mb-3">
+                            <label for="client_name" class="col-sm-2 col-form-label">oxd_id</label>
+                            <div class="col-sm-10">
+                                <input type="text" readonly class="form-control-plaintext" id="get_auth_oxd_id" value="<%= setting.oxd_id%>">
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="get_auth_submit">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <% } if(setting.oxd_id != "" && uprofile.name){%>
+        <div class="row section">
+            <div class="card w-100">
+                <h5 class="card-header">Hello, <%= uprofile.name%></h5>
+                <div class="card-body">
+                    <h5 class="card-title">Applications:</h5>
+                    <% setting.applications.forEach(function(item){ %>
+                    <div class="mb-3 row">
+                        <div class="col-sm-10">
+                            <a href="<%= item.url%>"><button type="button" class="btn btn-primary"><%= item.name%></button></a>
+                        </div>
+                    </div>
+                    <% }); %>
+                    <button type="button" class="btn btn-primary" id="sign_out_submit">Sign out</button>
+                </div>
+            </div>
+        </div>
+        <% }%>
+    </div>
+</body>
+<script>
+    async function postData(url, headers, data) {
+        const response = await fetch(url, {
+            method: 'POST', 
+            headers: headers,
+            body: JSON.stringify(data)
+        });
+        return response.json()
+    }
+
+
+    $("#reg_submit").on("click", function(){
+        let headers = {
+            'Content-Type': 'application/json'
+        }
+        let data = {
+            "client_name": $("#client_name").val(),
+            "authorization_redirect_uri": $("#authorization_redirect_uri").val(),
+            "post_logout_redirect_uri": $("#post_logout_redirect_uri").val(),
+            "scope": $("#scope").val().split(','),
+            "grant_types": $("#grant_types").val().split(',')
+        }
+
+        postData("/register", headers, data).then(res => {
+            if(res.status == "OK"){
+                location.reload()
+            }
+            else{
+                $("#reg_submit").html("failed!")
+            }
+        })
+    })
+
+
+    $("#get_auth_submit").on("click", function(){
+        let headers = {
+            'Content-Type': 'application/json'
+        }
+
+        let data = {
+            "oxd_id": $("#get_auth_oxd_id").val()
+        }
+        // alert(data)
+        postData("/getAuthURL", headers, data).then(res => {
+            if(res){
+                window.location = res.data.authorization_url
+            }
+        })
+    })
+
+    $("#sign_out_submit").on("click", function(){
+        let headers = {
+            'Content-Type': 'application/json'
+        }
+
+        let data = {
+            "oxd_id": "<%= setting.oxd_id%>"
+        }
+        // alert(data)
+        postData("/logout", headers, data).then(res => {
+            if(res){
+                window.location = res.uri
+            }
+        })
+    })
+</script>
+
+</html>
